@@ -1,53 +1,65 @@
+/**
+ * BinarySearchTree
+ */
 public class BinarySearchTree {
-    
-    private TreeNode root;
-    public BinarySearchTree(){
+    private static TreeNode root;
+
+    private static class TreeNode {
+        private int data;
+        private TreeNode left, right;
+
+        public TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    public BinarySearchTree() {
         root = null;
     }
 
-    private static class TreeNode{
-        private int data;
-        private TreeNode left;
-        private TreeNode right;
-        public TreeNode(int data){
-            this.data = data;
-            this.left = null;
-            this.right = null;
+    private static TreeNode insert(TreeNode root, int data) {
+        if (root == null) {
+            TreeNode x = new TreeNode(data);
+            return x;
         }
-    }
-
-    public TreeNode insertValue(TreeNode root,int data){
-        if(root==null){
-            root = new TreeNode(data);
-            return root;
-        }
-        if(data<root.data){
-            root.left = insertValue(root.left, data);
-        }else{
-            root.right = insertValue(root.right,data);
+        if (data < root.data) {
+            root.left = insert(root.left, data);
+        } else {
+            root.right = insert(root.right, data);
         }
         return root;
     }
 
-    public void inOrderTraverse(TreeNode root){
-        if(root==null){
-            return ;
+    private static void printTree(TreeNode root) {
+        if (root == null) {
+            return;
         }
-        inOrderTraverse(root.left);
-        System.out.print(root.data+" ");
-        inOrderTraverse(root.right);
+        printTree(root.left);
+        System.out.print(root.data + " ");
+        printTree(root.right);
+    }
+
+    private static int searchNode(TreeNode root, int key) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.data == key) {
+            return root.data;
+        }
+        if(key<root.data){
+            return searchNode(root.left, key);
+        }else{
+            return searchNode(root.right, key);
+        }
     }
 
     public static void main(String[] args) {
-        BinarySearchTree obj = new BinarySearchTree();
-        obj.root = obj.insertValue(obj.root, 3);
-        obj.root = obj.insertValue(obj.root, 1);
-        obj.root = obj.insertValue(obj.root, 5);
-        obj.root = obj.insertValue(obj.root, 2);
-        obj.root = obj.insertValue(obj.root, 10);
-        obj.root = obj.insertValue(obj.root, 1);
-        obj.inOrderTraverse(obj.root);
+        root = insert(root, 10);
+        root = insert(root, 1);
+        root = insert(root, 2);
+        root = insert(root, 19);
+        printTree(root);
         System.out.println();
-        System.out.println("");
+        System.out.println(searchNode(root, 3));
     }
 }
